@@ -1,5 +1,7 @@
 <div align="center">
 
+<font size="2">
+
 ```
                                                                                                                            
  `7MM"""Yp, `7MMF'            db       .g8"""bgd `7MMF' `YMM'MMP""MM""YMM `7MM"""Mq.        db       .g8"""bgd `7MM"""YMM  
@@ -11,6 +13,8 @@
  .JMMmmmd9  .JMMmmmmMMM .AMA.   .AMMA. `"bmmmd'  .JMML.   MMb.  .JMML.    .JMML. .JMM..AMA.   .AMMA. `"bmmmd'  .JMMmmmmMMM 
                                                                                                                            
 ```
+
+</font>
 
 # ⚡ Blacktrace
 
