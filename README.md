@@ -46,12 +46,12 @@
 
 ### Python (pip)
 ```bash
-                      pip install blacktrace
+pip install blacktrace
 ```
 
 ### Node.js (npm)
 ```bash
-                      npm install -g blacktrace
+npm install -g blacktrace
 ```
 
 ---
@@ -59,17 +59,17 @@
 ## 💻 Usage
 
 ```bash
-                      # Interactive menu
-                      blacktrace
+# Interactive menu
+blacktrace
 
-                      # Lookup your IP
-                      blacktrace
+# Lookup your IP
+blacktrace
 
-                      # Lookup specific IP
-                      blacktrace 8.8.8.8
+# Lookup specific IP
+blacktrace 8.8.8.8
 
-                      # Help
-                      blacktrace --help
+# Help
+blacktrace --help
 ```
 
 ---
@@ -114,19 +114,19 @@ Get a free token at [ipinfo.io/account](https://ipinfo.io/account)
 
 ### Option 1: Environment Variable (Recommended for GitHub)
 ```bash
-                      # Linux/Mac
-                      export IPINFO_TOKEN=your_token_here
+# Linux/Mac
+export IPINFO_TOKEN=your_token_here
 
-                      # Windows (CMD)
-                      set IPINFO_TOKEN=your_token_here
+# Windows (CMD)
+set IPINFO_TOKEN=your_token_here
 
-                      # Windows (PowerShell)
-                      $env:IPINFO_TOKEN="your_token_here"
+# Windows (PowerShell)
+$env:IPINFO_TOKEN="your_token_here"
 ```
 
 ### Option 2: Config File
 ```bash
-                      blacktrace --config
+blacktrace --config
 ```
 
 **Free tier:** 50,000 requests/month
@@ -139,18 +139,18 @@ Get a free token at [ipinfo.io/account](https://ipinfo.io/account)
 
 ### Python
 ```bash
-                      git clone https://github.com/PreeyanandaSoram/BlackTrace.git
-                      cd blacktrace/py
-                      pip install -r requirements.txt
-                      python -m blacktrace
+git clone https://github.com/PreeyanandaSoram/BlackTrace.git
+cd blacktrace/py
+pip install -r requirements.txt
+python -m blacktrace
 ```
 
 ### Node.js
 ```bash
-                      git clone https://github.com/PreeyanandaSoram/BlackTrace.git
-                      cd blacktrace/js
-                      npm install
-                      node bin/cli.js
+git clone https://github.com/PreeyanandaSoram/BlackTrace.git
+cd blacktrace/js
+npm install
+node bin/cli.js
 ```
 
 ---
