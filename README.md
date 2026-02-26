@@ -1,6 +1,6 @@
 <div align="center">
 
-<font size="2">
+<font size="1">
 
 ```
                                                                                                                            
