@@ -17,39 +17,31 @@ function loadConfig() {
     if (fs.existsSync(CONFIG_FILE)) {
       return JSON.parse(fs.readFileSync(CONFIG_FILE, 'utf8'));
     }
-  } catch (e) {}
+  } catch (e) { }
   return { apiToken: '' };
 }
 
 function getApiToken() {
   return process.env.IPINFO_TOKEN || loadConfig().apiToken || '';
-}
-  } catch (e) {}
-  return { apiToken: '' };
-}
-
-function getApiToken() {
-  return process.env.IPINFO_TOKEN || loadConfig().apiToken || '';
-}
-
-function saveConfig(config) {
-  fs.writeFileSync(CONFIG_FILE, JSON.stringify(config, null, 2));
 }
 
 function showBanner() {
-  console.log(chalk.cyan(`
-                                                                                                                           
- `7MM"""Yp, `7MMF'            db       .g8"""bgd `7MMF' `YMM'MMP""MM""YMM `7MM"""Mq.        db       .g8"""bgd `7MM"""YMM  
-   MM    Yb   MM             ;MM:    .dP'     `M   MM   .M'  P'   MM   `7   MM   `MM.      ;MM:    .dP'     `M   MM    `7  
-   MM    dP   MM            ,V^MM.   dM'       `   MM .d"         MM        MM   ,M9      ,V^MM.   dM'       `   MM   d    
-   MM"""bg.   MM           ,M  `MM   MM            MMMMM.         MM        MMmmdM9      ,M  `MM   MM            MMmmMM    
-   MM    `Y   MM      ,    AbmmmqMA  MM.           MM  VMA        MM        MM  YM.      AbmmmqMA  MM.           MM   Y  , 
-   MM    ,9   MM     ,M   A'     VML `Mb.     ,'   MM   `MM.      MM        MM   `Mb.   A'     VML `Mb.     ,'   MM     ,M 
- .JMMmmmd9  .JMMmmmmMMM .AMA.   .AMMA. `"bmmmd'  .JMML.   MMb.  .JMML.    .JMML. .JMM..AMA.   .AMMA. `"bmmmd'  .JMMmmmmMMM 
-                                                                                                                           
+  const ascii = `
+                                                                                                    
+ ▄▄▄▄    ██▓    ▄▄▄       ▄████▄   ██ ▄█▀▄▄▄█████▓ ██▀███   ▄▄▄       ▄████▄  ▓█████ 
+▓█████▄ ▓██▒   ▒████▄    ▒██▀ ▀█   ██▄█▒ ▓  ██▒ ▓▒▓██ ▒ ██▒▒████▄    ▒██▀ ▀█  ▓█   ▀ 
+▒██▒ ▄██▒██░   ▒██  ▀█▄  ▒▓█    ▄ ▓███▄░ ▒ ▓██░ ▒░▓██ ░▄█ ▒▒██  ▀█▄  ▒▓█    ▄ ▒███   
+▒██░█▀  ▒██░   ░██▄▄▄▄██ ▒▓▓▄ ▄██▒▓██ █▄ ░ ▓██▓ ░ ▒██▀▀█▄  ░██▄▄▄▄██ ▒▓▓▄ ▄██▒▒▓█  ▄ 
+░▓█  ▀█▓░██████▒▓█   ▓██▒▒ ▓███▀ ░▒██▒ █▄  ▒██▒ ░ ░██▓ ▒██▒ ▓█   ▓██▒▒ ▓███▀ ░░▒████▒
+░▒▓███▀▒░ ▒░▓  ░▒▒   ▓▒█░░ ░▒ ▒  ░▒ ▒▒ ▓▒  ▒ ░░   ░ ▒▓ ░▒▓░ ▒▒   ▓▒█░░ ░▒ ▒  ░░░ ▒░ ░
+▒░▒   ░ ░ ░ ▒  ░ ▒   ▒▒ ░  ░  ▒   ░ ░▒ ▒░    ░      ░▒ ░ ▒░  ▒   ▒▒ ░  ░  ▒    ░ ░  ░
+ ░    ░   ░ ░    ░   ▒   ░        ░ ░░ ░   ░        ░░   ░   ░   ▒   ░           ░   
+ ░          ░  ░     ░  ░░ ░      ░  ░               ░           ░  ░░ ░         ░  ░
+      ░                  ░                                           ░                                                                                                                                                                                          
 
   [ v1.0.0 ]
-  `));
+  `;
+  console.log(chalk.white(ascii));
 }
 
 function showMenu() {
@@ -90,7 +82,7 @@ async function lookupIP(ip = '', config) {
   try {
     const token = getApiToken();
     let url, params = {};
-    
+
     if (token) {
       url = token ? `${BASE_URL}/lite/${ip || 'me'}` : `${BASE_URL}/${ip || 'me'}`;
       params = token ? { token } : {};
@@ -98,7 +90,7 @@ async function lookupIP(ip = '', config) {
       url = ip ? `${BASE_URL}/${ip}/json` : `${BASE_URL}/json`;
     }
 
-    const headers = !token && config.apiToken 
+    const headers = !token && config.apiToken
       ? { 'Authorization': `Bearer ${config.apiToken}` }
       : {};
 
@@ -106,7 +98,7 @@ async function lookupIP(ip = '', config) {
     const data = response.data;
 
     const parts = [];
-    
+
     if (data.ip) parts.push([chalk.green('◆ IP'), data.ip]);
     if (data.city) parts.push([chalk.cyan('◆ CITY'), data.city]);
     if (data.region) parts.push([chalk.cyan('◆ REGION'), data.region]);
@@ -128,12 +120,12 @@ async function lookupIP(ip = '', config) {
     console.log(chalk.cyan('  ╔' + '═'.repeat(boxWidth) + '╗'));
     console.log(chalk.cyan('  ║') + chalk.white(' '.repeat(Math.floor((boxWidth - 22) / 2)) + ' IP INFORMATION ' + ' '.repeat(Math.ceil((boxWidth - 22) / 2))) + chalk.cyan('║'));
     console.log(chalk.cyan('  ╠' + '═'.repeat(boxWidth) + '╣'));
-    
+
     for (const [label, value] of parts) {
       const padding = boxWidth - label.length - value.length - 4;
       console.log(chalk.cyan('  ║ ') + label + ' '.repeat(padding > 0 ? padding : 0) + value + chalk.cyan('  ║'));
     }
-    
+
     console.log(chalk.cyan('  ╚' + '═'.repeat(boxWidth) + '╝'));
     console.log();
 
@@ -148,7 +140,7 @@ async function lookupIP(ip = '', config) {
 
 async function main() {
   const config = loadConfig();
-  
+
   if (process.argv.length > 2) {
     const ip = process.argv[2];
     if (ip === '--help' || ip === '-h') {
@@ -167,7 +159,7 @@ async function main() {
   while (true) {
     showBanner();
     showMenu();
-    
+
     const readline = await import('readline');
     const rl = readline.createInterface({
       input: process.stdin,
