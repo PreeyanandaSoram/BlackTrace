@@ -1,138 +1,160 @@
 <div align="center">
 
-```text
-  ╔═══════════════════════════════════════════════════════════════════════╗
-  ║                                                                       ║
-  ║   ██████╗ ██╗   ██╗██╗     ███████╗███████╗██╗               ██████╗  ║
-  ║  ██╔═══██╗██║   ██║██║     ██╔════╝██╔════╝██║              ██╔══██╗ ║
-  ║  ██║   ██║██║   ██║██║     █████╗  ███████╗██║              ██║  ██║ ║
-  ║  ██║▄▄ ██║██║   ██║██║     ██╔══╝  ╚════██║██║              ██║  ██║ ║
-  ║  ╚██████╔╝╚██████╔╝███████╗███████╗███████║██║              ██████╔╝ ║
-  ║   ╚══▀▀═╝  ╚═════╝ ╚══════╝╚══════╝╚══════╝╚═╝              ╚═════╝  ║
-  ║                                                                       ║
-  ║                      ███████╗ ██████╗ ██████╗                       ║
-  ║                      ██╔════╝██╔═══██╗██╔══██╗                      ║
-  ║                      █████╗  ██║   ██║██████╔╝                      ║
-  ║                      ██╔══╝  ██║   ██║██╔══██╗                      ║
-  ║                      ███████╗╚██████╔╝██║  ██║                      ║
-  ║                      ╚══════╝ ╚═════╝ ╚═╝  ╚═╝                      ║
-  ║                                                                       ║
-  ║                         [ v1.0.0 ]                                    ║
-  ║                                                                       ║
-  ╚═══════════════════════════════════════════════════════════════════════╝
+```
+                                                                                                                           
+ `7MM"""Yp, `7MMF'            db       .g8"""bgd `7MMF' `YMM'MMP""MM""YMM `7MM"""Mq.        db       .g8"""bgd `7MM"""YMM  
+   MM    Yb   MM             ;MM:    .dP'     `M   MM   .M'  P'   MM   `7   MM   `MM.      ;MM:    .dP'     `M   MM    `7  
+   MM    dP   MM            ,V^MM.   dM'       `   MM .d"         MM        MM   ,M9      ,V^MM.   dM'       `   MM   d    
+   MM"""bg.   MM           ,M  `MM   MM            MMMMM.         MM        MMmmdM9      ,M  `MM   MM            MMmmMM    
+   MM    `Y   MM      ,    AbmmmqMA  MM.           MM  VMA        MM        MM  YM.      AbmmmqMA  MM.           MM   Y  , 
+   MM    ,9   MM     ,M   A'     VML `Mb.     ,'   MM   `MM.      MM        MM   `Mb.   A'     VML `Mb.     ,'   MM     ,M 
+ .JMMmmmd9  .JMMmmmmMMM .AMA.   .AMMA. `"bmmmd'  .JMML.   MMb.  .JMML.    .JMML. .JMM..AMA.   .AMMA. `"bmmmd'  .JMMmmmmMMM 
+                                                                                                                           
 ```
 
-</div>
+# ⚡ Blacktrace
 
-A powerful IP lookup CLI tool with an amazing hacker-style UI.
+### A powerful IP lookup CLI tool with an amazing hacker-style UI
 
-<p align="center">
-  <img src="https://img.shields.io/npm/v/ipinfo-cli" alt="npm version">
-  <img src="https://img.shields.io/pypi/v/ipinfo-cli" alt="PyPI version">
-  <img src="https://img.shields.io/github/license/PreeyanandaSoram/ipinfo-cli" alt="license">
-</p>
+[![PyPI Version](https://img.shields.io/pypi/v/blacktrace?color=blue&style=flat-square)](https://pypi.org/project/blacktrace/)
+[![npm Version](https://img.shields.io/npm/v/blacktrace?color=red&style=flat-square)](https://www.npmjs.com/package/blacktrace)
+[![License](https://img.shields.io/github/license/PreeyanandaSoram/blacktrace?style=flat-square)](https://github.com/PreeyanandaSoram/blacktrace)
+[![Python](https://img.shields.io/pypi/pyversions/blacktrace?style=flat-square)](https://pypi.org/project/blacktrace/)
+[![Node.js](https://img.shields.io/node/v/blacktrace?style=flat-square)](https://nodejs.org/)
+
+---
 
 ## ✨ Features
 
-- 🎨 Amazing hacker-style terminal UI
-- 🌐 Lookup your public IP address
-- 🔍 Lookup any IP address worldwide
-- 🔑 API token configuration for higher limits
-- 🖥️ Cross-platform (Node.js & Python)
-- ⚡ Fast and reliable
+| Feature | Description |
+|---------|-------------|
+| 🎨 **Hacker UI** | Amazing terminal interface with matrix-style aesthetics |
+| 🌐 **IP Lookup** | Look up your public IP or any IP address worldwide |
+| 🔑 **API Support** | Configure token for higher lookup limits |
+| 🖥️ **Cross-Platform** | Works on Node.js & Python |
+| ⚡ **Fast & Light** | Minimal dependencies, blazing fast |
 
-## 📦 Installation
+---
 
-### Node.js (npm)
-```bash
-npm install -g ipinfo-cli
-```
+## 🚀 Quick Install
 
 ### Python (pip)
 ```bash
-pip install ipinfo-cli
+pip install blacktrace
 ```
 
-## 🚀 Usage
+### Node.js (npm)
+```bash
+npm install -g blacktrace
+```
+
+---
+
+## 💻 Usage
 
 ```bash
-ipinfo
+# Interactive menu
+blacktrace
+
+# Lookup your IP
+blacktrace
+
+# Lookup specific IP
+blacktrace 8.8.8.8
+
+# Help
+blacktrace --help
 ```
 
-## 📸 Menu
+---
 
+## 📸 Preview
+
+### Menu
 ```
   ╔═══════════════════════════════════════════════════════╗
   ║                     MAIN MENU                    ║
   ╠═══════════════════════════════════════════════════════╣
   ║  [1]  Lookup My IP                        ║
   ║  [2]  Lookup Specific IP                  ║
-  ║  [3]  Configure API Token                 ║
-  ║  [4]  About                               ║
-  ║  [5]  Exit                                ║
+  ║  [3]  About                               ║
+  ║  [4]  Exit                                ║
   ╚═══════════════════════════════════════════════════════╝
 ```
 
-## 📸 Example Output
-
+### Output
 ```
   ┌─ LOADING ────────────────────────────────────────────┐
   │ Fetching IP information...                            │
-  └──────────────────────────────────────────────────────┘
+  └───────────────────────────────────────────────────────┘
 
   ╔═══════════════════════════════════════════════════════╗
   ║                    IP INFORMATION                      ║
   ╠═══════════════════════════════════════════════════════╣
-  ║ ◆ IP            1.2.3.4                               ║
-  ║ ◆ CITY          Bangkok                               ║
-  ║ ◆ REGION        Thailand                              ║
-  ║ ◆ COUNTRY       TH                                   ║
-  ║ ◆ COORDINATES   13.7563,100.5018                      ║
-  ║ ◆ ORGANIZATION  AIS Fibre                             ║
+  ◆ IP            1.2.3.4
+  ◆ CITY          Bangkok
+  ◆ REGION        Thailand
+  ◆ COUNTRY       TH
+  ◆ COORDINATES   13.7563,100.5018
+  ◆ ORGANIZATION  AIS Fibre
   ╚═══════════════════════════════════════════════════════╝
 ```
 
+---
+
 ## 🔑 API Token
 
-For higher lookup limits, configure your API token:
+Get a free token at [ipinfo.io/account](https://ipinfo.io/account)
 
-1. Get a free token at https://ipinfo.io/account
-2. Run `ipinfo --config` or use option 3 in menu
-3. Enter your API token
-
-Free tier: 50,000 requests/month
-
-## 📖 Command Line Options
-
+### Option 1: Environment Variable (Recommended for GitHub)
 ```bash
-ipinfo              # Show menu
-ipinfo <ip>        # Lookup specific IP
-ipinfo --config    # Configure API token
-ipinfo --help      # Show help
+# Linux/Mac
+export IPINFO_TOKEN=your_token_here
+
+# Windows (CMD)
+set IPINFO_TOKEN=your_token_here
+
+# Windows (PowerShell)
+$env:IPINFO_TOKEN="your_token_here"
 ```
 
-## 🔧 Development
+### Option 2: Config File
+```bash
+blacktrace --config
+```
+
+**Free tier:** 50,000 requests/month
+
+> **Note:** `.env` and `config.json` are ignored by Git to protect your token.
+
+---
+
+## 🛠️ Development
+
+### Python
+```bash
+git clone https://github.com/PreeyanandaSoram/blacktrace.git
+cd blacktrace/py
+pip install -r requirements.txt
+python -m blacktrace
+```
 
 ### Node.js
 ```bash
-git clone https://github.com/Preeyananda/ipinfo-cli.git
-cd ipinfo-cli/js
+git clone https://github.com/PreeyanandaSoram/blacktrace.git
+cd blacktrace/js
 npm install
 node bin/cli.js
 ```
 
-### Python
-```bash
-git clone https://github.com/Preeyananda/ipinfo-cli.git
-cd ipinfo-cli/py
-pip install -r requirements.txt
-python -m ipinfo
-```
+---
 
-## 📄 License
+## 📝 License
 
-MIT License - see the [LICENSE](https://github.com/PreeyanandaSoram/ipinfo-cli/blob/main/LICENSE) file.
+MIT License - see [LICENSE](https://github.com/PreeyanandaSoram/blacktrace/blob/main/LICENSE)
 
 ---
 
-<p align="center">Made with ❤️ by Preeyananda Soram</p>
+<p align="center">
+  Made with ❤️ by <a href="https://github.com/PreeyanandaSoram">Preeyananda Soram</a>
+</p>

@@ -1,12 +1,12 @@
 {
-  "name": "ipinfo-cli",
+  "name": "blacktrace",
   "version": "1.0.0",
   "description": "IP lookup CLI tool with hacker-style UI",
   "bin": {
-    "ipinfo": "./bin/cli.js"
+    "blacktrace": "./bin/cli.js"
   },
   "type": "module",
-  "keywords": ["ip", "info", "lookup", "geolocation", "cli"],
+  "keywords": ["ip", "info", "lookup", "geolocation", "cli", "blacktrace"],
   "author": "Preeyananda Soram",
   "license": "MIT",
   "engines": {

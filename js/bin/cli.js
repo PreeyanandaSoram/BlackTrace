@@ -10,6 +10,7 @@ const __filename = fileURLToPath(import.meta.url);
 const __dirname = path.dirname(__filename);
 
 const CONFIG_FILE = path.join(__dirname, '..', 'config.json');
+const BASE_URL = 'https://ipinfo.io';
 
 function loadConfig() {
   try {
@@ -20,31 +21,34 @@ function loadConfig() {
   return { apiToken: '' };
 }
 
+function getApiToken() {
+  return process.env.IPINFO_TOKEN || loadConfig().apiToken || '';
+}
+  } catch (e) {}
+  return { apiToken: '' };
+}
+
+function getApiToken() {
+  return process.env.IPINFO_TOKEN || loadConfig().apiToken || '';
+}
+
 function saveConfig(config) {
   fs.writeFileSync(CONFIG_FILE, JSON.stringify(config, null, 2));
 }
 
 function showBanner() {
   console.log(chalk.cyan(`
-  ╔═══════════════════════════════════════════════════════════════════════╗
-  ║                                                                       ║
-  ║   ██████╗ ██╗   ██╗██╗     ███████╗███████╗██╗               ██████╗  ║
-  ║  ██╔═══██╗██║   ██║██║     ██╔════╝██╔════╝██║              ██╔══██╗ ║
-  ║  ██║   ██║██║   ██║██║     █████╗  ███████╗██║              ██║  ██║ ║
-  ║  ██║▄▄ ██║██║   ██║██║     ██╔══╝  ╚════██║██║              ██║  ██║ ║
-  ║  ╚██████╔╝╚██████╔╝███████╗███████╗███████║██║              ██████╔╝ ║
-  ║   ╚══▀▀═╝  ╚═════╝ ╚══════╝╚══════╝╚══════╝╚═╝              ╚═════╝  ║
-  ║                                                                       ║
-  ║                      ███████╗ ██████╗ ██████╗                       ║
-  ║                      ██╔════╝██╔═══██╗██╔══██╗                      ║
-  ║                      █████╗  ██║   ██║██████╔╝                      ║
-  ║                      ██╔══╝  ██║   ██║██╔══██╗                      ║
-  ║                      ███████╗╚██████╔╝██║  ██║                      ║
-  ║                      ╚══════╝ ╚═════╝ ╚═╝  ╚═╝                      ║
-  ║                                                                       ║
-  ║                         [ v1.0.0 ]                                    ║
-  ║                                                                       ║
-  ╚═══════════════════════════════════════════════════════════════════════╝
+                                                                                                                           
+ `7MM"""Yp, `7MMF'            db       .g8"""bgd `7MMF' `YMM'MMP""MM""YMM `7MM"""Mq.        db       .g8"""bgd `7MM"""YMM  
+   MM    Yb   MM             ;MM:    .dP'     `M   MM   .M'  P'   MM   `7   MM   `MM.      ;MM:    .dP'     `M   MM    `7  
+   MM    dP   MM            ,V^MM.   dM'       `   MM .d"         MM        MM   ,M9      ,V^MM.   dM'       `   MM   d    
+   MM"""bg.   MM           ,M  `MM   MM            MMMMM.         MM        MMmmdM9      ,M  `MM   MM            MMmmMM    
+   MM    `Y   MM      ,    AbmmmqMA  MM.           MM  VMA        MM        MM  YM.      AbmmmqMA  MM.           MM   Y  , 
+   MM    ,9   MM     ,M   A'     VML `Mb.     ,'   MM   `MM.      MM        MM   `Mb.   A'     VML `Mb.     ,'   MM     ,M 
+ .JMMmmmd9  .JMMmmmmMMM .AMA.   .AMMA. `"bmmmd'  .JMML.   MMb.  .JMML.    .JMML. .JMM..AMA.   .AMMA. `"bmmmd'  .JMMmmmmMMM 
+                                                                                                                           
+
+  [ v1.0.0 ]
   `));
 }
 
@@ -54,9 +58,8 @@ function showMenu() {
   console.log(chalk.white('  ╠═══════════════════════════════════════════════════════╣'));
   console.log(chalk.white('  ║') + chalk.green('  [1]') + chalk.white('  Lookup My IP                        ') + chalk.white('║'));
   console.log(chalk.white('  ║') + chalk.green('  [2]') + chalk.white('  Lookup Specific IP                  ') + chalk.white('║'));
-  console.log(chalk.white('  ║') + chalk.yellow('  [3]') + chalk.white('  Configure API Token                 ') + chalk.white('║'));
-  console.log(chalk.white('  ║') + chalk.cyan('  [4]') + chalk.white('  About                               ') + chalk.white('║'));
-  console.log(chalk.white('  ║') + chalk.red('  [5]') + chalk.white('  Exit                                ') + chalk.white('║'));
+  console.log(chalk.white('  ║') + chalk.cyan('  [3]') + chalk.white('  About                               ') + chalk.white('║'));
+  console.log(chalk.white('  ║') + chalk.red('  [4]') + chalk.white('  Exit                                ') + chalk.white('║'));
   console.log(chalk.white('  ╚═══════════════════════════════════════════════════════╝'));
   console.log();
 }
@@ -67,7 +70,7 @@ function showAbout() {
   ║                     ABOUT                              ║
   ╠═══════════════════════════════════════════════════════╣
   ║                                                       ║
-  ║   IPINFO CLI - Terminal IP Lookup Tool               ║
+  ║   BLACKTRACE - Terminal IP Lookup Tool               ║
   ║                                                       ║
   ║   Version: 1.0.0                                     ║
   ║   API: ipinfo.io                                     ║
@@ -85,15 +88,21 @@ async function lookupIP(ip = '', config) {
   console.log();
 
   try {
-    const url = ip 
-      ? `https://ipinfo.io/${ip}/json`
-      : 'https://ipinfo.io/json';
+    const token = getApiToken();
+    let url, params = {};
     
-    const headers = config.apiToken 
+    if (token) {
+      url = token ? `${BASE_URL}/lite/${ip || 'me'}` : `${BASE_URL}/${ip || 'me'}`;
+      params = token ? { token } : {};
+    } else {
+      url = ip ? `${BASE_URL}/${ip}/json` : `${BASE_URL}/json`;
+    }
+
+    const headers = !token && config.apiToken 
       ? { 'Authorization': `Bearer ${config.apiToken}` }
       : {};
 
-    const response = await axios.get(url, { headers, timeout: 10000 });
+    const response = await axios.get(url, { headers, params, timeout: 10000 });
     const data = response.data;
 
     const parts = [];
@@ -137,36 +146,6 @@ async function lookupIP(ip = '', config) {
   }
 }
 
-async function configureToken(config) {
-  const tokenStatus = config.apiToken ? chalk.green('Configured') : chalk.red('Not Set');
-  console.log(chalk.yellow('  ╔═══════════════════════════════════════════════════════╗'));
-  console.log(chalk.yellow('  ║') + chalk.white('  Current API Token: ') + tokenStatus + ' '.repeat(28) + chalk.yellow('║'));
-  console.log(chalk.yellow('  ╚═══════════════════════════════════════════════════════╝'));
-  console.log();
-  console.log(chalk.gray('  Get your free token at: https://ipinfo.io/account'));
-  console.log();
-
-  const readline = await import('readline');
-  const rl = readline.createInterface({
-    input: process.stdin,
-    output: process.stdout
-  });
-
-  return new Promise((resolve) => {
-    rl.question(chalk.cyan('  Enter new API Token (or press Enter to skip): '), (answer) => {
-      rl.close();
-      if (answer.trim()) {
-        config.apiToken = answer.trim();
-        saveConfig(config);
-        console.log(chalk.green('\n  ✓ API Token saved successfully!\n'));
-      } else {
-        console.log(chalk.gray('\n  Cancelled.\n'));
-      }
-      resolve(config);
-    });
-  });
-}
-
 async function main() {
   const config = loadConfig();
   
@@ -175,15 +154,9 @@ async function main() {
     if (ip === '--help' || ip === '-h') {
       showBanner();
       console.log(chalk.white('  Usage:'));
-      console.log(chalk.gray('    ipinfo              - Show this help'));
-      console.log(chalk.gray('    ipinfo <ip>        - Lookup specific IP'));
-      console.log(chalk.gray('    ipinfo --config    - Configure API token'));
+      console.log(chalk.gray('    blacktrace              - Show this help'));
+      console.log(chalk.gray('    blacktrace <ip>        - Lookup specific IP'));
       console.log();
-      return;
-    }
-    if (ip === '--config') {
-      showBanner();
-      await configureToken(config);
       return;
     }
     showBanner();
@@ -227,12 +200,9 @@ async function main() {
         if (ip) await lookupIP(ip, config);
         break;
       case '3':
-        await configureToken(config);
-        break;
-      case '4':
         showAbout();
         break;
-      case '5':
+      case '4':
         console.log(chalk.gray('  Goodbye, Hacker! 🖥️\n'));
         process.exit(0);
       default:

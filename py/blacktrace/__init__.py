@@ -10,12 +10,13 @@ try:
     init(autoreset=True)
 except ImportError:
     class Fore:
-        CYAN = GREEN = YELLOW = RED = BLUE = MAGENTA = WHITE = ''
+        CYAN = GREEN = YELLOW = RED = BLUE = MAGENTA = WHITE = GRAY = ''
     class Style:
-        BRIGHT = BOLD = ''
+        BRIGHT = BOLD = RESET_ALL = ''
 
 CONFIG_FILE = os.path.join(os.path.dirname(__file__), '..', 'config.json')
 VERSION = "1.0.0"
+BASE_URL = "https://ipinfo.io"
 
 def load_config():
     try:
@@ -26,31 +27,22 @@ def load_config():
         pass
     return {"apiToken": ""}
 
-def save_config(config):
-    with open(CONFIG_FILE, 'w') as f:
-        json.dump(config, f, indent=2)
+def get_api_token():
+    return os.environ.get('IPINFO_TOKEN') or load_config().get('apiToken', '')
 
 def show_banner():
     print(Fore.CYAN + Style.BRIGHT + """
-  ╔═══════════════════════════════════════════════════════════════════════╗
-  ║                                                                       ║
-  ║   ██████╗ ██╗   ██╗██╗     ███████╗███████╗██╗               ██████╗  ║
-  ║  ██╔═══██╗██║   ██║██║     ██╔════╝██╔════╝██║              ██╔══██╗ ║
-  ║  ██║   ██║██║   ██║██║     █████╗  ███████╗██║              ██║  ██║ ║
-  ║  ██║▄▄ ██║██║   ██║██║     ██╔══╝  ╚════██║██║              ██║  ██║ ║
-  ║  ╚██████╔╝╚██████╔╝███████╗███████╗███████║██║              ██████╔╝ ║
-  ║   ╚══▀▀═╝  ╚═════╝ ╚══════╝╚══════╝╚══════╝╚═╝              ╚═════╝  ║
-  ║                                                                       ║
-  ║                      ███████╗ ██████╗ ██████╗                       ║
-  ║                      ██╔════╝██╔═══██╗██╔══██╗                      ║
-  ║                      █████╗  ██║   ██║██████╔╝                      ║
-  ║                      ██╔══╝  ██║   ██║██╔══██╗                      ║
-  ║                      ███████╗╚██████╔╝██║  ██║                      ║
-  ║                      ╚══════╝ ╚═════╝ ╚═╝  ╚═╝                      ║
-  ║                                                                       ║
-  ║                         [ v1.0.0 ]                                    ║
-  ║                                                                       ║
-  ╚═══════════════════════════════════════════════════════════════════════╝
+                                                                                                                           
+ `7MM"""Yp, `7MMF'            db       .g8"""bgd `7MMF' `YMM'MMP""MM""YMM `7MM"""Mq.        db       .g8"""bgd `7MM"""YMM  
+   MM    Yb   MM             ;MM:    .dP'     `M   MM   .M'  P'   MM   `7   MM   `MM.      ;MM:    .dP'     `M   MM    `7  
+   MM    dP   MM            ,V^MM.   dM'       `   MM .d"         MM        MM   ,M9      ,V^MM.   dM'       `   MM   d    
+   MM"""bg.   MM           ,M  `MM   MM            MMMMM.         MM        MMmmdM9      ,M  `MM   MM            MMmmMM    
+   MM    `Y   MM      ,    AbmmmqMA  MM.           MM  VMA        MM        MM  YM.      AbmmmqMA  MM.           MM   Y  , 
+   MM    ,9   MM     ,M   A'     VML `Mb.     ,'   MM   `MM.      MM        MM   `Mb.   A'     VML `Mb.     ,'   MM     ,M 
+ .JMMmmmd9  .JMMmmmmMMM .AMA.   .AMMA. `"bmmmd'  .JMML.   MMb.  .JMML.    .JMML. .JMM..AMA.   .AMMA. `"bmmmd'  .JMMmmmmMMM 
+                                                                                                                           
+
+  [ v1.0.0 ]
   """ + Style.RESET_ALL)
 
 def show_menu():
@@ -59,9 +51,8 @@ def show_menu():
     print(Fore.WHITE + "  ╠═══════════════════════════════════════════════════════╣")
     print(Fore.WHITE + "  ║" + Fore.GREEN + "  [1]" + Fore.WHITE + "  Lookup My IP                        " + Fore.WHITE + "║")
     print(Fore.WHITE + "  ║" + Fore.GREEN + "  [2]" + Fore.WHITE + "  Lookup Specific IP                  " + Fore.WHITE + "║")
-    print(Fore.WHITE + "  ║" + Fore.YELLOW + "  [3]" + Fore.WHITE + "  Configure API Token                 " + Fore.WHITE + "║")
-    print(Fore.WHITE + "  ║" + Fore.CYAN + "  [4]" + Fore.WHITE + "  About                               " + Fore.WHITE + "║")
-    print(Fore.WHITE + "  ║" + Fore.RED + "  [5]" + Fore.WHITE + "  Exit                                " + Fore.WHITE + "║")
+    print(Fore.WHITE + "  ║" + Fore.CYAN + "  [3]" + Fore.WHITE + "  About                               " + Fore.WHITE + "║")
+    print(Fore.WHITE + "  ║" + Fore.RED + "  [4]" + Fore.WHITE + "  Exit                                " + Fore.WHITE + "║")
     print(Fore.WHITE + "  ╚═══════════════════════════════════════════════════════╝")
     print()
 
@@ -71,7 +62,7 @@ def show_about():
   ║                     ABOUT                              ║
   ╠═══════════════════════════════════════════════════════╣
   ║                                                       ║
-  ║   IPINFO CLI - Terminal IP Lookup Tool               ║
+  ║   BLACKTRACE - Terminal IP Lookup Tool               ║
   ║                                                       ║
   ║   Version: """ + VERSION + """                                     ║
   ║   API: ipinfo.io                                     ║
@@ -88,12 +79,15 @@ def lookup_ip(ip='', config=None):
     print()
 
     try:
-        url = f'https://ipinfo.io/{ip}/json' if ip else 'https://ipinfo.io/json'
-        headers = {}
-        if config and config.get('apiToken'):
-            headers['Authorization'] = f"Bearer {config['apiToken']}"
+        token = get_api_token()
+        if token:
+            url = f'{BASE_URL}/lite/{ip}' if ip else f'{BASE_URL}/me'
+            params = {'token': token}
+        else:
+            url = f'{BASE_URL}/{ip}/json' if ip else f'{BASE_URL}/json'
+            params = {}
         
-        response = requests.get(url, headers=headers, timeout=10)
+        response = requests.get(url, params=params, timeout=10)
         data = response.json()
 
         parts = []
@@ -135,50 +129,21 @@ def lookup_ip(ip='', config=None):
         print(Fore.RED + '  ╚═══════════════════════════════════════════════════════╝')
         print()
 
-def configure_token(config):
-    token_status = Fore.GREEN + 'Configured' if config.get('apiToken') else Fore.RED + 'Not Set'
-    print(Fore.YELLOW + '  ╔═══════════════════════════════════════════════════════╗')
-    print(Fore.YELLOW + '  ║' + Fore.WHITE + '  Current API Token: ' + token_status + ' ' * 28 + Fore.YELLOW + '║')
-    print(Fore.YELLOW + '  ╚═══════════════════════════════════════════════════════╝')
-    print()
-    print(Fore.GRAY + '  Get your free token at: https://ipinfo.io/account')
-    print()
-    
-    answer = input(Fore.CYAN + '  Enter new API Token (or press Enter to skip): ' + Fore.WHITE).strip()
-    if answer:
-        config['apiToken'] = answer
-        save_config(config)
-        print(Fore.GREEN + '\n  ✓ API Token saved successfully!\n')
-    else:
-        print(Fore.GRAY + '\n  Cancelled.\n')
-    
-    return config
-
 def main():
     config = load_config()
     
-    if len(sys.argv) > 2:
+    if len(sys.argv) > 1:
         arg = sys.argv[1]
         if arg in ['--help', '-h']:
             show_banner()
             print(Fore.WHITE + '  Usage:')
-            print(Fore.GRAY + '    ipinfo              - Show this help')
-            print(Fore.GRAY + '    ipinfo <ip>        - Lookup specific IP')
-            print(Fore.GRAY + '    ipinfo --config    - Configure API token')
+            print(Fore.GRAY + '    blacktrace              - Show this help')
+            print(Fore.GRAY + '    blacktrace <ip>        - Lookup specific IP')
             print()
-            return
-        if arg == '--config':
-            show_banner()
-            configure_token(config)
             return
         
         show_banner()
         lookup_ip(arg, config)
-        return
-
-    if len(sys.argv) == 2 and sys.argv[1] == '--config':
-        show_banner()
-        configure_token(config)
         return
 
     while True:
@@ -195,10 +160,8 @@ def main():
             if ip:
                 lookup_ip(ip, config)
         elif choice == '3':
-            configure_token(config)
-        elif choice == '4':
             show_about()
-        elif choice == '5':
+        elif choice == '4':
             print(Fore.GRAY + '  Goodbye, Hacker! 🖥️\n')
             break
         else:
